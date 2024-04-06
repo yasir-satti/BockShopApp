@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve --config webpack/webpack.config.js --env env=dev --open",
     "build": "webpack --config webpack/webpack.config.js --env env=prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "react-scripts test",
     "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
@@ -20,6 +20,9 @@
     "@babel/preset-react": "^7.24.1",
     "@babel/preset-typescript": "^7.24.1",
     "@babel/runtime": "^7.24.4",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.2",
+    "@types/jest": "^29.5.12",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
@@ -43,6 +46,7 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
   }
 }
