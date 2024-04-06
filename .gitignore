@@ -8,6 +8,9 @@ target/
 Tests/
 lib/
 
+/backendapp/.gradle
+
+
 .DS_Store
 
 /backendapp/.env
