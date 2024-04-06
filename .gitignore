@@ -9,6 +9,8 @@ Tests/
 lib/
 
 /backendapp/.gradle
+/backendapp/gradle
+
 
 
 .DS_Store
