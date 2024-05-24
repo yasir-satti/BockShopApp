@@ -9,6 +9,7 @@
 - Order books
 - Return books
 - Customer book review
+- cv
 
 [## Front end application](frontendapp/README.md)
 
