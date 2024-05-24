@@ -4,7 +4,7 @@ import com.example.backendapp.entity.Customer;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Customers {
+public class CustomerService {
 
     public long create(Customer customer){
         return 1L;

@@ -3,9 +3,9 @@ package com.example.backendapp.controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/1")
+@RequestMapping("/api/1/customer")
 @CrossOrigin(origins="http://localhost:3000")
-public class CustomersClient {
+public class CustomerController {
 
     @PostMapping
     public String createNewCustomer(){

@@ -1,7 +1,7 @@
 package com.example.backendapp.controller;
 
 import com.example.backendapp.entity.Customer;
-import com.example.backendapp.service.Customers;
+import com.example.backendapp.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,20 +12,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CustomersClient.class)
-public class CustomersClientTest {
+@WebMvcTest(CustomerController.class)
+public class CustomerControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    Customers customers;
+    CustomerService customerService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -40,7 +38,7 @@ public class CustomersClientTest {
         customer.setFirstName("John");
         customer.setSurName("Smith");
 
-        when(customers.create(argumentCaptor.capture())).thenReturn(1L);
+//        when(customers.create(argumentCaptor.capture())).thenReturn(1L);
 
         this.mockMvc.perform(
                 post("http://localhost/api/1")
@@ -55,7 +53,7 @@ public class CustomersClientTest {
     @Test
     public void getCustomerRecord() throws Exception {
 
-        when(customers.getById(anyInt())).thenReturn("got customer record");
+//        when(customers.getById(anyInt())).thenReturn("got customer record");
 
         this.mockMvc.perform(
                         get("http://localhost/api/1")
