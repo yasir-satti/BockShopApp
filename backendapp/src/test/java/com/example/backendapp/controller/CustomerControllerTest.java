@@ -28,20 +28,13 @@ public class CustomerControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Captor
-    ArgumentCaptor<Customer> argumentCaptor;
-
     @Test
     public void createNewCustomerRecord() throws Exception {
 
-        Customer customer = new Customer();
-        customer.setFirstName("John");
-        customer.setSurName("Smith");
-
-//        when(customers.create(argumentCaptor.capture())).thenReturn(1L);
+        Customer customer = new Customer(1L, "John", "Smith");
 
         this.mockMvc.perform(
-                post("http://localhost/api/1")
+                post("http://localhost/api/1/customer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customer))
         )
@@ -53,13 +46,11 @@ public class CustomerControllerTest {
     @Test
     public void getCustomerRecord() throws Exception {
 
-//        when(customers.getById(anyInt())).thenReturn("got customer record");
-
         this.mockMvc.perform(
-                        get("http://localhost/api/1")
+                        get("http://localhost/api/1/customer")
                 )
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(status().isOk())
-                .andExpect(content().string("got customer record"));;
+                .andExpect(content().string("got customer record"));
     }
 }

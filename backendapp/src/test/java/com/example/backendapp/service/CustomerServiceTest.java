@@ -1,55 +1,93 @@
 package com.example.backendapp.service;
 
 import com.example.backendapp.entity.Customer;
+import com.example.backendapp.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class CustomerServiceTest {
 
     @Autowired
-    CustomerService customerService;
+    private CustomerService customerService;
+
+    @MockBean
+    private CustomerRepository customerRepository;
 
     @BeforeEach
     public void setup(){}
 
     @Test
-    public void whenCreatingNewCustomer_getRecordId(){
+    public void saveCustomerRecord(){
+
         Customer customer = new Customer();
+        customer.setId(1L);
         customer.setFirstName("John");
         customer.setSurName("Smith");
-        long id = customerService.create(customer);
+
+        when(customerRepository.save(customer)).thenReturn(customer);
+
+        long id = customerService.save(customer);
+
         assertThat(id).isEqualTo(1L);
     }
 
     @Test
-    public void whenCustomerRecordRead_getRecordData(){
-        String record = customerService.getById(1L);
-        assertThat(record).isEqualTo("record");
-    }
+    public void getCustomerRecordById(){
 
-    @Test
-    public void whenAllCustomersRecordsRead_getRecordsData(){
-        String record = customerService.getAll();
-        assertThat(record).isEqualTo("record");
-    }
-
-    @Test
-    public void whenUserRecordUpdated_getRecordData(){
         Customer customer = new Customer();
+        customer.setId(1L);
         customer.setFirstName("John");
         customer.setSurName("Smith");
-        String record = customerService.update(1L, customer);
-        assertThat(record).isEqualTo("updated record");
+
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(customer));
+
+        Optional<Customer> record = Optional.ofNullable(customerService.findById(1L));
+
+        assertThat(record).isEqualTo(Optional.of(customer));
     }
 
     @Test
-    public void whenUserRecordDeleted_getRecordData(){
-        String record = customerService.delete(1L);
-        assertThat(record).isEqualTo("deleted record");
+    public void findAllCustomerRecords(){
+
+        Customer c1 = new Customer(1L, "John", "Smith");
+        Customer c2 = new Customer(2L, "Mike", "Ashly");
+        List<Customer> customersList = Arrays.asList(c1, c2);
+
+        when(customerRepository.findAll()).thenReturn(customersList);
+
+        List<Customer> record = customerService.findAll();
+
+        assertThat(record).isEqualTo(customersList);
+    }
+
+    @Test
+    public void updateCustomerRecord(){
+
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setFirstName("John");
+        customer.setSurName("Smith");
+
+    }
+
+    @Test
+    public void deleteCustomerRecord(){
+
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setFirstName("John");
+        customer.setSurName("Smith");
     }
 }

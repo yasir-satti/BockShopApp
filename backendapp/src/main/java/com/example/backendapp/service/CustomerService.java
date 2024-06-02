@@ -1,29 +1,46 @@
 package com.example.backendapp.service;
 
+import com.example.backendapp.exception.CustomException;
 import com.example.backendapp.entity.Customer;
+import com.example.backendapp.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
 
-    public long create(Customer customer){
-        return 1L;
-    };
+    @Autowired
+    private CustomerRepository customerRepository;
 
-    public String getById(long id){
-        return "record";
-    };
+    public long save(Customer customer){
+        return customerRepository.save(customer).getId();
+    }
 
-    public String getAll(){
-        return "record";
-    };
+    public Customer findById(long id){
+        Optional<Customer> record = customerRepository.findById(id);
+        if(record.isEmpty()) {
+            throw new CustomException(String.format("Record with id: '%s' not found", id));
+        }
+        return record.get();
+    }
 
-    public String update(long id, Customer customer){
-        return "updated record";
-    };
+    public List<Customer> findAll(){
+        List<Customer> record = customerRepository.findAll();
+        if(record.isEmpty()) {
+            throw new CustomException("No records are found");
+        }
+        return record;
+    }
 
-    public String delete(long id){
-        return "deleted record";
-    };
+    public long update(long id, Customer customer){
+        return customerRepository.save(customer).getId();
+    }
+
+    public void delete(Customer customer){
+        customerRepository.delete(customer);
+    }
 
 }
