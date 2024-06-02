@@ -35,12 +35,17 @@ public class CustomerService {
         return record;
     }
 
-    public long update(long id, Customer customer){
-        return customerRepository.save(customer).getId();
+    public long update(long id, Customer modifiedCustomer){
+        Optional<Customer> recordToUpdate = Optional.ofNullable(this.findById(id));
+        Customer newRecord = recordToUpdate.get();
+        newRecord.setFirstName(modifiedCustomer.getFirstName());
+        return customerRepository.save(newRecord).getId();
     }
 
-    public void delete(Customer customer){
-        customerRepository.delete(customer);
+    public void delete(long id){
+        Optional<Customer> recordToDelete = Optional.ofNullable(this.findById(id));
+        Customer record = recordToDelete.get();
+        customerRepository.delete(record);
     }
 
 }

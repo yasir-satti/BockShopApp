@@ -91,12 +91,30 @@ public class CustomerServiceRepositoryIntegrationTest {
     }
 
     @Test
+    public void throwExceptionWhenNoCustomerRecordIsFoundToUpdate(){
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "customers");
+
+        Customer customer = new Customer(1L, "John", "Smith");
+
+        Exception exception = assertThrows(
+                CustomException.class,
+                ()-> { customerService.update(1L, customer);}
+        );
+
+        String expectedExceptionMessage = "Record with id: '1' not found";
+        String actualExceptionMessage = exception.getMessage();
+
+        assertTrue(actualExceptionMessage.contains(expectedExceptionMessage));
+    }
+
+    @Test
     public void deleteCustomerRecord(){
         Customer customer = new Customer(1L, "John", "Smith");
 
         long id = customerService.save(customer);
 
-        customerService.delete(customer);
+        customerService.delete(id);
 
         Exception exception = assertThrows(
                 CustomException.class,

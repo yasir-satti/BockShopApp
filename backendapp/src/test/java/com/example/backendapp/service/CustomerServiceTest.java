@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@ActiveProfiles("application-test.properties")
 public class CustomerServiceTest {
 
     @Autowired
@@ -75,19 +77,24 @@ public class CustomerServiceTest {
     @Test
     public void updateCustomerRecord(){
 
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setFirstName("John");
-        customer.setSurName("Smith");
+        Customer recordToUpdate = new Customer(1L, "John", "Smith");
+        Customer updatedRecord = new Customer(1L, "Mike", "Smith");
 
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(recordToUpdate));
+        when(customerRepository.save(updatedRecord)).thenReturn(updatedRecord);
+
+        long id = customerService.update(1L, updatedRecord);
+
+        assertThat(id).isEqualTo(1L);
     }
 
-    @Test
-    public void deleteCustomerRecord(){
-
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setFirstName("John");
-        customer.setSurName("Smith");
-    }
+//    @Test
+//    public void deleteCustomerRecord(){
+//
+//        Customer customer = new Customer(1L, "John", "Smith");
+//
+//        when(customerRepository.delete(customer)).thenReturn(customer);
+//
+//        customerService.delete(1L);
+//    }
 }
