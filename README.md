@@ -13,3 +13,18 @@
 [## Front end application](frontendapp/README.md)
 
 [## Back end application](backendapp/README.md)
+
+## Tech stack
+
+### Back-end
+Spring Boot
+Java
+
+### Front-end
+
+TypeScript
+### Cloud
+AWS
+
+### Infrastructure as Code (IoC)
+Terraform
