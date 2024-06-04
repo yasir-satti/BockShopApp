@@ -2,7 +2,6 @@ package com.example.backendapp.service;
 
 import com.example.backendapp.entity.Customer;
 import com.example.backendapp.repository.CustomerRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +25,6 @@ public class CustomerServiceTest {
 
     @MockBean
     private CustomerRepository customerRepository;
-
-    @BeforeEach
-    public void setup(){}
 
     @Test
     public void saveCustomerRecord(){

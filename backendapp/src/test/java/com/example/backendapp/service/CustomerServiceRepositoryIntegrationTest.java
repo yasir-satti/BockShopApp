@@ -2,14 +2,12 @@ package com.example.backendapp.service;
 
 import com.example.backendapp.entity.Customer;
 import com.example.backendapp.exception.CustomException;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.backendapp.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,10 +25,7 @@ public class CustomerServiceRepositoryIntegrationTest {
     CustomerService customerService;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @BeforeEach
-    public void setup(){}
+    CustomerRepository customerRepository;
 
     @Test
     public void saveCustomerRecord(){
@@ -48,16 +43,19 @@ public class CustomerServiceRepositoryIntegrationTest {
     public void findCustomerRecordById(){
         Customer customer = new Customer(1L, "John", "Smith");
 
-        long id = customerService.save(customer);
+        customerRepository.save(customer);
 
-        Customer record = customerService.findById(id);
+        Customer record = customerService.findById(customer.getId());
         assertThat(record).isEqualTo(customer);
     }
 
     @Test
     public void findAllCustomerRecords(){
         Customer c1 = new Customer(1L, "John", "Smith");
+        customerRepository.save(c1);
         Customer c2 = new Customer(2L, "Mike", "Ashly");
+        customerRepository.save(c2);
+
         List<Customer> expectedCustomers = Arrays.asList(c1, c2);
 
         List<Customer> customers = customerService.findAll();
@@ -66,8 +64,6 @@ public class CustomerServiceRepositoryIntegrationTest {
 
     @Test
     public void throwExceptionWhenNoCustomerRecordsAreFound(){
-
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "customers");
 
         Exception exception = assertThrows(
                 CustomException.class,
@@ -83,7 +79,7 @@ public class CustomerServiceRepositoryIntegrationTest {
     @Test
     public void updateCustomerRecord(){
         Customer customer = new Customer(1L, "John", "Smith");
-        long id = customerService.save(customer);
+        long id = customerRepository.save(customer).getId();
 
         customer.setFirstName("Sally");
         long record = customerService.update(id, customer);
@@ -92,8 +88,6 @@ public class CustomerServiceRepositoryIntegrationTest {
 
     @Test
     public void throwExceptionWhenNoCustomerRecordIsFoundToUpdate(){
-
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "customers");
 
         Customer customer = new Customer(1L, "John", "Smith");
 
@@ -112,7 +106,7 @@ public class CustomerServiceRepositoryIntegrationTest {
     public void deleteCustomerRecord(){
         Customer customer = new Customer(1L, "John", "Smith");
 
-        long id = customerService.save(customer);
+        long id = customerRepository.save(customer).getId();
 
         customerService.delete(id);
 
