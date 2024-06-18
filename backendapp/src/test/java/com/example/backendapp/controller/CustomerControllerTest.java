@@ -4,8 +4,6 @@ import com.example.backendapp.entity.Customer;
 import com.example.backendapp.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,9 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,6 +23,9 @@ public class CustomerControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    CustomerController customerController;
 
     @MockBean
     CustomerService customerService;
@@ -56,14 +55,16 @@ public class CustomerControllerTest {
 
         Customer customer = new Customer(3L, "John", "Smith");
 
-        when(customerService.findById(anyInt())).thenReturn(customer);
+        when(customerService.findById(3L)).thenReturn(customer);
 
         this.mockMvc.perform(
                         get("/api/1/customer/3")
                 )
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].firstName", is("John")));
+                .andExpect(jsonPath("$.id", is(Integer.parseInt("3"))))
+                .andExpect(jsonPath("$.firstName", is("John")))
+                .andExpect(jsonPath("$.surName", is("Smith")));
+        ;
     }
 
     @Test
@@ -96,6 +97,6 @@ public class CustomerControllerTest {
                                 .content(objectMapper.writeValueAsString(customer))
                 )
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string("1"));
+                .andExpect(content().string(containsString("1")));
     }
 }

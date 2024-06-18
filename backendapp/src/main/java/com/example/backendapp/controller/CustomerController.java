@@ -68,8 +68,9 @@ public class CustomerController {
     @Operation(summary = API_DOC_UPDATE_OPS_SUM,
             description = API_DOC_UPDATE_OPS_DESC)
     @PutMapping ("/{id}")
-    public long updateCustomerRecord(@PathVariable("id") long id, Customer customer){
-        return customerService.update(id, customer);
+    public ResponseEntity<Long> updateCustomerRecord(@PathVariable("id") long id, @RequestBody Customer customer){
+        Long retId = customerService.update(id, customer);
+        return ResponseEntity.ok(retId);
     }
 
     @Tag(name = API_DOC_DELETE_GROUP_TAG, description = API_DOC_DELETE_GROUP_DESC)

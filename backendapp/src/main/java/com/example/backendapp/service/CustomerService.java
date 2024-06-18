@@ -36,7 +36,7 @@ public class CustomerService {
     }
 
     public long update(long id, Customer modifiedCustomer){
-        Optional<Customer> recordToUpdate = Optional.ofNullable(this.findById(id));
+        Optional<Customer> recordToUpdate = customerRepository.findById(id);
         Customer newRecord = recordToUpdate.get();
         newRecord.setFirstName(modifiedCustomer.getFirstName());
         return customerRepository.save(newRecord).getId();
